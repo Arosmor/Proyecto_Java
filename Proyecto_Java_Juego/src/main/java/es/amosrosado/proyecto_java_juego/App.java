@@ -1,5 +1,6 @@
 package es.amosrosado.proyecto_java_juego;
 
+import java.util.Random;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -27,8 +28,21 @@ public class App extends Application {
     int soldadoPosX = 195;
     int velocidadSoldado = 0;
     
-    ImageView imgViewSoldado;
+    int municionPosX = 500;
+    int municionPosY = 210;
+    
+    int botiquinPosX = 700;
+    int botiquinPosY = 220;
+    
+    int armaPosX = 900;
+    int armaPosY = 230;
+    
+    ImageView imgViewSoldadoDerecha;
+    ImageView imgViewSoldadoIzquierda;
     ImageView imgViewMapa;
+    ImageView imgViewMunicion;
+    ImageView imgViewBotiquin;
+    ImageView imgViewArma;
     
     @Override
     public void start(Stage stage) {
@@ -47,22 +61,63 @@ public class App extends Application {
         
         //Imagen del Soldado Derecha
         Image imagenSoldadoDerecha = new Image(getClass().getResourceAsStream("/images/SoldadoDerecha.png"));
-        imgViewSoldado = new ImageView(imagenSoldadoDerecha);
+        imgViewSoldadoDerecha = new ImageView(imagenSoldadoDerecha);
         
-        //Englobacion para colisiones
-        Rectangle rectZona1 = new Rectangle(195, 195);
-        Group groupZona1 = new Group();
-        groupZona1.getChildren().addAll(imagenSoldadoDerecha, rectZona1);
-        //Hacemos Invisible el Rectangulo
-        //rectZona1.setVisible(false);
         //Imagen Soladado Izquierda
         Image imagenSoldadoIzquierda = new Image(getClass().getResourceAsStream("/images/SoldadoIzquierda.png"));
-        imgViewSoldado = new ImageView(imagenSoldadoIzquierda);
+        imgViewSoldadoIzquierda = new ImageView(imagenSoldadoIzquierda);
         
-        //Posicion del soldado
-        imgViewSoldado.setY(soldadoPosY);
-        imgViewSoldado.setX(soldadoPosX);
-        paneRoot.getChildren().add(imgViewSoldado);
+        //Englobacion para colisiones imagenes soldados
+        Rectangle rectSoldados = new Rectangle(195, 195);
+        Group groupRectSoldados = new Group();
+        groupRectSoldados.getChildren().addAll(rectSoldados, imgViewSoldadoIzquierda, imgViewSoldadoDerecha);
+        
+        //Imagen Municion
+        Image imagenMunicion = new Image(getClass().getResourceAsStream("/images/Municion.png"));
+        imgViewMunicion = new ImageView(imagenMunicion);
+        
+        //ImagenBotiquin
+        Image imagenBotiquin = new Image(getClass().getResourceAsStream("/images/Botiquin.png"));
+        imgViewBotiquin = new ImageView(imagenBotiquin);
+        
+        //Imagen Arma
+        Image imagenArma = new Image(getClass().getResourceAsStream("/images/Arma.png"));
+        imgViewArma = new ImageView(imagenArma);
+        
+        //Eleccion aleatoria de objetivos
+        Random objetivoRandom = new Random();
+        objetivoRandom.nextInt(3);
+        
+        //Posicion aleatoria de Ojbetivos
+        Random posicionRandom = new Random();
+        posicionRandom.nextInt(1001);
+        
+        //if(objetivoRandom == 1) {
+            
+        //}
+        imgViewMunicion.setX(municionPosX);
+        imgViewMunicion.setY(municionPosY);
+        paneRoot.getChildren().add(imgViewMunicion);
+  
+        imgViewBotiquin.setX(botiquinPosX);
+        imgViewBotiquin.setY(botiquinPosY);
+        paneRoot.getChildren().add(imgViewBotiquin);
+        
+        imgViewArma.setX(armaPosX);
+        imgViewArma.setY(armaPosY);
+        paneRoot.getChildren().add(imgViewArma);
+        // Deteccion de colision de los rectangulos
+        //Shape zonaColision = Shape.intersect(rectSoldados);
+        
+        //Posicion del soldado Derecha
+        imgViewSoldadoIzquierda.setY(soldadoPosY);
+        imgViewSoldadoIzquierda.setX(soldadoPosX);
+        paneRoot.getChildren().add(imgViewSoldadoIzquierda);
+        
+        //Posicion del soldado Izquierda
+        imgViewSoldadoDerecha.setY(soldadoPosY);
+        imgViewSoldadoDerecha.setX(soldadoPosX);
+        paneRoot.getChildren().add(imgViewSoldadoDerecha);
         
         //Pulsacion de las teclas
         scene.setOnKeyPressed((KeyEvent event) -> {
@@ -70,11 +125,17 @@ public class App extends Application {
                 case LEFT:
                     //Pulsar tecla izquierda
                     velocidadSoldado = -5;
-                    imgViewSoldado.setImage(imagenSoldadoIzquierda);
+                    imgViewSoldadoIzquierda.setImage(imagenSoldadoIzquierda);
+                    //Hcer invisible imagen izquierda y visible la derecha
+                    imgViewSoldadoDerecha.setVisible(false);
+                    imgViewSoldadoIzquierda.setVisible(true);
                     break;
                 case RIGHT:
-                    imgViewSoldado.setImage(imagenSoldadoDerecha);
+                    imgViewSoldadoDerecha.setImage(imagenSoldadoDerecha);
                     velocidadSoldado = 5;
+                    //Hacer invisible imagen derecha y visible la izquierda
+                    imgViewSoldadoIzquierda.setVisible(false);
+                    imgViewSoldadoDerecha.setVisible(true);
                     break;
             }
         });
@@ -88,9 +149,23 @@ public class App extends Application {
         //root.getChildren().add(soldado);
         Timeline movimiento_Soldado = new Timeline(
             new KeyFrame(Duration.seconds(0.017), (ActionEvent ae) -> {
-                //Actualizar Posicion del Soldado
+                //Actualizar Posicion del Soldado Izquierda
                 soldadoPosX += velocidadSoldado;
-                imgViewSoldado.setX(soldadoPosX);
+                imgViewSoldadoIzquierda.setX(soldadoPosX);
+
+                //Actualizar Posicion del Soldado Derecha
+                soldadoPosX += velocidadSoldado;
+                imgViewSoldadoDerecha.setX(soldadoPosX);
+                                
+                // Limites de imagenes del soldado
+                if(soldadoPosX < 0){
+                    soldadoPosX = 0;
+                } else {
+                    if(soldadoPosX > LARGO_ESCENA - 55) {
+                        soldadoPosX = LARGO_ESCENA - 55;
+                    }
+                }
+                
             })
         );
         movimiento_Soldado.setCycleCount(Timeline.INDEFINITE);
