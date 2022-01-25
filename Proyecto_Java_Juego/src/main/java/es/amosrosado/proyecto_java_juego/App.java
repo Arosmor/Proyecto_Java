@@ -13,6 +13,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -44,6 +45,7 @@ public class App extends Application {
     ImageView imgViewBotiquin;
     ImageView imgViewArma;
     
+            
     @Override
     public void start(Stage stage) {
         // Creacion escena
@@ -53,6 +55,8 @@ public class App extends Application {
         stage.setTitle("Proyecto");
         stage.setScene(scene);
         stage.show();
+        
+        // ------------------------------- IMAGENES --------------------------------//
         
         //Imagen del Mapa
         Image imagen_Mapa1 = new Image(getClass().getResourceAsStream("/images/Mapa1.jpg"));
@@ -66,12 +70,7 @@ public class App extends Application {
         //Imagen Soladado Izquierda
         Image imagenSoldadoIzquierda = new Image(getClass().getResourceAsStream("/images/SoldadoIzquierda.png"));
         imgViewSoldadoIzquierda = new ImageView(imagenSoldadoIzquierda);
-        
-        //Englobacion para colisiones imagenes soldados
-        Rectangle rectSoldados = new Rectangle(195, 195);
-        Group groupRectSoldados = new Group();
-        groupRectSoldados.getChildren().addAll(rectSoldados, imgViewSoldadoIzquierda, imgViewSoldadoDerecha);
-        
+                
         //Imagen Municion
         Image imagenMunicion = new Image(getClass().getResourceAsStream("/images/Municion.png"));
         imgViewMunicion = new ImageView(imagenMunicion);
@@ -84,40 +83,79 @@ public class App extends Application {
         Image imagenArma = new Image(getClass().getResourceAsStream("/images/Arma.png"));
         imgViewArma = new ImageView(imagenArma);
         
+        //-------------------------- ENGLOBACIONES ---------------------------//
+        
+        //Englobacion para colisiones imagenes soldados
+        Rectangle rectSoldados = new Rectangle(70, 70);
+        Group groupRectSoldados = new Group();
+        groupRectSoldados.getChildren().addAll(rectSoldados, imgViewSoldadoIzquierda, imgViewSoldadoDerecha);
+        rectSoldados.setVisible(false);
+        //Posicion inicial Grupo Soldados
+        groupRectSoldados.setLayoutX(195);
+        groupRectSoldados.setLayoutY(195);
+        paneRoot.getChildren().add(groupRectSoldados);
+
+        //Englobacion imagen municion == 0
+        Rectangle rectMunicion = new Rectangle(57,53);
+        Group groupRectMunicion = new Group();
+        groupRectMunicion.getChildren().addAll(rectMunicion, imgViewMunicion);
+        rectMunicion.setVisible(false);
+        //Posicion inicial Grupo Municion
+        groupRectMunicion.setLayoutX(1000);
+        groupRectMunicion.setLayoutY(230);
+        paneRoot.getChildren().add(groupRectMunicion);
+        
+        //Englobacion imagen botiquin == 1
+        Rectangle rectBotiquin = new Rectangle(59, 38);
+        Group groupRectBotiquin = new Group();
+        groupRectBotiquin.getChildren().addAll(rectBotiquin, imgViewBotiquin);
+        rectBotiquin.setVisible(false);
+        //Posicion inicial Grupo Botiquin
+        groupRectBotiquin.setLayoutX(1000);
+        groupRectBotiquin.setLayoutY(230);
+        paneRoot.getChildren().add(groupRectBotiquin);
+        
+        //Englobacion imagen arma == 2
+        Rectangle rectArma = new Rectangle(100, 32);
+        Group groupRectArma = new Group();
+        groupRectArma.getChildren().addAll(rectArma, imgViewArma);
+        rectArma.setVisible(false);
+        //Posicion inicial Grupo Arma
+        groupRectArma.setLayoutX(1000);
+        groupRectArma.setLayoutY(240);
+        paneRoot.getChildren().add(groupRectArma);
+        
+        //---------------------- COLISIONES ------------------------------//
+        
+        Shape colisionSoldadoMunicion = Shape.intersect(rectSoldados, rectMunicion);
+        Shape colisionesSoldadoBotiquin = Shape.intersect(rectBotiquin, rectBotiquin);
+        Shape colisionSoldadoArma = Shape.intersect(rectBotiquin, rectArma);
+        
+        //----------------- POSICIONES ALEATORIAS ----------------------//
+        
         //Eleccion aleatoria de objetivos
         Random objetivoRandom = new Random();
-        objetivoRandom.nextInt(3);
+        int objetivoAleatorio = objetivoRandom.nextInt(3);
         
         //Posicion aleatoria de Ojbetivos
         Random posicionRandom = new Random();
-        posicionRandom.nextInt(1001);
+        int posicionAleatoria = posicionRandom.nextInt(900);
         
-        //if(objetivoRandom == 1) {
-            
-        //}
-        imgViewMunicion.setX(municionPosX);
-        imgViewMunicion.setY(municionPosY);
-        paneRoot.getChildren().add(imgViewMunicion);
-  
-        imgViewBotiquin.setX(botiquinPosX);
-        imgViewBotiquin.setY(botiquinPosY);
-        paneRoot.getChildren().add(imgViewBotiquin);
+        //----------------------- CONDICION ---------------------------//
         
-        imgViewArma.setX(armaPosX);
-        imgViewArma.setY(armaPosY);
-        paneRoot.getChildren().add(imgViewArma);
-        // Deteccion de colision de los rectangulos
-        //Shape zonaColision = Shape.intersect(rectSoldados);
+        switch(objetivoAleatorio) {
+            case 0:
+                groupRectMunicion.setLayoutX(posicionAleatoria);
+                break;
+            case 1:
+                groupRectBotiquin.setLayoutX(posicionAleatoria);
+                break;
+            case 2:
+                groupRectArma.setLayoutX(posicionAleatoria);
+                break;
+        }
         
-        //Posicion del soldado Derecha
-        imgViewSoldadoIzquierda.setY(soldadoPosY);
-        imgViewSoldadoIzquierda.setX(soldadoPosX);
-        paneRoot.getChildren().add(imgViewSoldadoIzquierda);
-        
-        //Posicion del soldado Izquierda
-        imgViewSoldadoDerecha.setY(soldadoPosY);
-        imgViewSoldadoDerecha.setX(soldadoPosX);
-        paneRoot.getChildren().add(imgViewSoldadoDerecha);
+        //------------------- PULSACION DE TECLAS --------------------------//
         
         //Pulsacion de las teclas
         scene.setOnKeyPressed((KeyEvent event) -> {
@@ -126,7 +164,7 @@ public class App extends Application {
                     //Pulsar tecla izquierda
                     velocidadSoldado = -5;
                     imgViewSoldadoIzquierda.setImage(imagenSoldadoIzquierda);
-                    //Hcer invisible imagen izquierda y visible la derecha
+                    //Hacer invisible imagen izquierda y visible la derecha
                     imgViewSoldadoDerecha.setVisible(false);
                     imgViewSoldadoIzquierda.setVisible(true);
                     break;
@@ -151,11 +189,11 @@ public class App extends Application {
             new KeyFrame(Duration.seconds(0.017), (ActionEvent ae) -> {
                 //Actualizar Posicion del Soldado Izquierda
                 soldadoPosX += velocidadSoldado;
-                imgViewSoldadoIzquierda.setX(soldadoPosX);
+                groupRectSoldados.setLayoutX(soldadoPosX);
 
                 //Actualizar Posicion del Soldado Derecha
                 soldadoPosX += velocidadSoldado;
-                imgViewSoldadoDerecha.setX(soldadoPosX);
+                groupRectSoldados.setLayoutX(soldadoPosX);
                                 
                 // Limites de imagenes del soldado
                 if(soldadoPosX < 0){
