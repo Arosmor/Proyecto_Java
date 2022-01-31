@@ -5,15 +5,19 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -23,7 +27,7 @@ public class App extends Application {
     // Variables finales
     final int ANCHO_ESCENA = 300;
     final int LARGO_ESCENA = 1000;
-    
+    final int TEXT_SIZE = 20;
     //Variables
     int soldadoPosY = 195;
     int soldadoPosX = 195;
@@ -38,8 +42,29 @@ public class App extends Application {
     int armaPosX = 900;
     int armaPosY = 230;
     
-    int velocidadBombaY = 15;
-    int velocidadConstBomba = 3;
+    int posicionBombaX = 200;
+    int posicionBomba2X = 300;
+    int posicionBomba3X = 500;
+    int posicionBomba4X = 700;
+    
+    int posicionBombaY = 10;
+    int velocidadConstBomba = 2;
+
+    int posicionBomba2Y = 10;
+    int velocidadConstBomba2 = 2;
+    
+    int posicionBomba3Y = 10;
+    int velocidadConstBomba3 = 2;
+
+    int posicionBomba4Y = 10;
+    int velocidadConstBomba4 = 2;
+    
+    // Variables Random 
+    int randomBombaX;
+    int randomBombaY;
+    int randomVelocidadBomba;
+    
+    int puntuacion;
     
     ImageView imgViewSoldadoDerecha;
     ImageView imgViewSoldadoIzquierda;
@@ -61,11 +86,100 @@ public class App extends Application {
     Group groupRectBomba3;
     Group groupRectBomba4;
     
-    private void posicionBombaRandom() {
+    Text textoPuntuacion;
+    
+    private void switchRandomBomba() {
         
-        Random posicionRandomBomba = new Random();
-        int randomBomba = posicionRandomBomba.nextInt(950);
+        Random random = new Random();
+        randomBombaX = random.nextInt(950);
+        randomBombaY = random.nextInt(395); 
+        randomVelocidadBomba = random.nextInt(4);
+ 
+        switch(randomVelocidadBomba) {
+            case 0:
+                velocidadConstBomba = 1;
+                break;
+            case 1:
+                velocidadConstBomba = 2;
+                break;
+            case 2:
+                velocidadConstBomba = 3;
+                break;
+            case 3:
+                velocidadConstBomba = 4;
+                break;
+        }
     }
+    
+    private void switchRandomBomba2() {
+        
+        Random random = new Random();
+        randomBombaX = random.nextInt(950);
+        randomBombaY = random.nextInt(395); 
+        randomVelocidadBomba = random.nextInt(4);
+ 
+        switch(randomVelocidadBomba) {
+            case 0:
+                velocidadConstBomba2 = 1;
+                break;
+            case 1:
+                velocidadConstBomba2 = 2;
+                break;
+            case 2:
+                velocidadConstBomba2 = 3;
+                break;
+            case 3:
+                velocidadConstBomba2 = 4;
+                break;
+        }
+    }
+    
+    private void switchRandomBomba3() {
+        
+        Random random = new Random();
+        randomBombaX = random.nextInt(950);
+        randomBombaY = random.nextInt(395); 
+        randomVelocidadBomba = random.nextInt(4);
+ 
+        switch(randomVelocidadBomba) {
+            case 0:
+                velocidadConstBomba3 = 1;
+                break;
+            case 1:
+                velocidadConstBomba3 = 2;
+                break;
+            case 2:
+                velocidadConstBomba3 = 3;
+                break;
+            case 3:
+                velocidadConstBomba3 = 4;
+                break;
+        }
+    }
+    
+    private void switchRandomBomba4() {
+        
+        Random random = new Random();
+        randomBombaX = random.nextInt(950);
+        randomBombaY = random.nextInt(395); 
+        randomVelocidadBomba = random.nextInt(4);
+ 
+        switch(randomVelocidadBomba) {
+            case 0:
+                velocidadConstBomba4 = 1;
+                break;
+            case 1:
+                velocidadConstBomba4 = 2;
+                break;
+            case 2:
+                velocidadConstBomba4 = 3;
+                break;
+            case 3:
+                velocidadConstBomba4 = 4;
+                break;
+        }
+    }
+    
     private void switchRandom() {
         
         //Eleccion aleatoria de objetivos
@@ -91,9 +205,15 @@ public class App extends Application {
         }
     }
     
+    private void reinicioPartida() {
+        puntuacion = 0;
+        textoPuntuacion.setText(String.valueOf(puntuacion));
+        posicionBombaX = -50;
+    }
+    
     @Override
     public void start(Stage stage) {
-        // Creacion escena
+        //-------------------------- CREACION ESCENA -------------------------------//
         Pane paneRoot = new Pane();
         Scene scene = new Scene(paneRoot, LARGO_ESCENA, ANCHO_ESCENA);
         scene.setFill(Color.BLACK);
@@ -101,6 +221,8 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
         
+
+
         // ------------------------------- IMAGENES --------------------------------//
         
         //Imagen del Mapa
@@ -147,7 +269,7 @@ public class App extends Application {
         Rectangle rectSoldados = new Rectangle(70, 70);
         groupRectSoldados = new Group();
         groupRectSoldados.getChildren().addAll(rectSoldados, imgViewSoldadoIzquierda, imgViewSoldadoDerecha);
-        rectSoldados.setVisible(false);
+        rectSoldados.setVisible(true);
         //Posicion inicial Grupo Soldados
         groupRectSoldados.setLayoutX(195);
         groupRectSoldados.setLayoutY(195);
@@ -184,47 +306,88 @@ public class App extends Application {
         paneRoot.getChildren().add(groupRectArma);
         
         //Englobacion imagen bomba1
-        Rectangle rectBomba = new Rectangle(59, 55);
+        Rectangle rectBomba = new Rectangle(59, 30);
         groupRectBomba = new Group();
         groupRectBomba.getChildren().addAll(rectBomba, imgViewBomba1);
-        rectBomba.setVisible(false);
+        rectBomba.setVisible(true);
         //Posicion inicial Grupo Bomba1
         groupRectBomba.setLayoutX(500);
-        groupRectBomba.setLayoutY(50);
+        groupRectBomba.setLayoutY(-50);
         paneRoot.getChildren().add(groupRectBomba);
         
         //Englobacion imagen bomba2
-        Rectangle rectBomba2 = new Rectangle(59, 55);
+        Rectangle rectBomba2 = new Rectangle(59, 30);
         groupRectBomba2 = new Group();
         groupRectBomba2.getChildren().addAll(rectBomba2, imgViewBomba2);
-        rectBomba2.setVisible(false);
+        rectBomba2.setVisible(true);
         //Posicion inicial Grupo Bomba2
         groupRectBomba2.setLayoutX(200);
-        groupRectBomba2.setLayoutY(50);
+        groupRectBomba2.setLayoutY(-50);
         paneRoot.getChildren().add(groupRectBomba2);
         
         //Englobacion imagen bomba3
-        Rectangle rectBomba3 = new Rectangle(59, 55);
+        Rectangle rectBomba3 = new Rectangle(59, 30);
         groupRectBomba3 = new Group();
         groupRectBomba3.getChildren().addAll(rectBomba3, imgViewBomba3);
-        rectBomba3.setVisible(false);
+        rectBomba3.setVisible(true);
         //Posicion inicial Grupo Bomba3
         groupRectBomba3.setLayoutX(700);
-        groupRectBomba3.setLayoutY(50);
+        groupRectBomba3.setLayoutY(-50);
         paneRoot.getChildren().add(groupRectBomba3);
         
         //Englobacion imagen bomba4
-        Rectangle rectBomba4 = new Rectangle(59, 55);
+        Rectangle rectBomba4 = new Rectangle(59, 30);
         groupRectBomba4 = new Group();
         groupRectBomba4.getChildren().addAll(rectBomba4, imgViewBomba4);
-        rectBomba4.setVisible(false);
+        rectBomba4.setVisible(true);
         //Posicion inicial Grupo Bomba4
         groupRectBomba4.setLayoutX(300);
-        groupRectBomba4.setLayoutY(50);
+        groupRectBomba4.setLayoutY(-50);
         paneRoot.getChildren().add(groupRectBomba4);
         
         switchRandom();
         
+        // ------------------------------- PUNTUACIONES ------------------------------//
+        
+        HBox paneScores = new HBox();
+        paneScores.setTranslateY(20);
+        paneScores.setMinWidth(LARGO_ESCENA);
+        paneScores.setAlignment(Pos.CENTER);
+        paneScores.setSpacing(100);
+        paneRoot.getChildren().add(paneScores);
+        
+        HBox paneCurrentScore = new HBox();
+        paneCurrentScore.setSpacing(10);
+        paneScores.getChildren().add(paneCurrentScore);
+        
+        HBox paneHighScore = new HBox();
+        paneHighScore.setSpacing(10);
+        paneScores.getChildren().add(paneHighScore);
+        
+        Text textoTituloPuntuacion = new Text("Puntuacion:");
+        textoTituloPuntuacion.setFont(Font.font(TEXT_SIZE));
+        textoTituloPuntuacion.setFill(Color.WHITE);
+        
+        textoPuntuacion = new Text("0");
+        textoPuntuacion.setFont(Font.font(TEXT_SIZE));
+        textoPuntuacion.setFill(Color.WHITE);
+        
+        Text textoTituloDificultad = new Text("Dificultad:");
+        textoTituloDificultad.setFont(Font.font(TEXT_SIZE));
+        textoTituloDificultad.setFill(Color.WHITE);
+        
+        Text textoDificultad = new Text("Facil");
+        textoDificultad.setFont(Font.font(TEXT_SIZE));
+        textoDificultad.setFill(Color.WHITE);
+        
+        paneCurrentScore.getChildren().add(textoTituloPuntuacion);
+        paneCurrentScore.getChildren().add(textoPuntuacion);
+        paneHighScore.getChildren().add(textoTituloDificultad);
+        paneHighScore.getChildren().add(textoDificultad);
+        
+//        if(textoPuntuacion == puntuacionMaxima) {
+//            
+//        }
         //------------------- PULSACION DE TECLAS --------------------------//
         
         //Pulsacion de las teclas
@@ -281,12 +444,18 @@ public class App extends Application {
                 if(colisionMunicion == false) {
                     groupRectMunicion.setLayoutX(1200);
                     switchRandom();
+                    //Incrementamos la puntuacion
+                    puntuacion++;
+                    textoPuntuacion.setText(String.valueOf(puntuacion));
                 }
                 Shape colisionSoldadoBotiquin = Shape.intersect(rectSoldados, rectBotiquin);
                 boolean colisionBotiquin = colisionSoldadoBotiquin.getBoundsInLocal().isEmpty();
                 if(colisionBotiquin == false) {
                     groupRectBotiquin.setLayoutX(1200); 
                     switchRandom();
+                    //Incrementamos la puntuacion
+                    puntuacion++;
+                    textoPuntuacion.setText(String.valueOf(puntuacion));
                 }
                     
                 Shape colisionSoldadoArma = Shape.intersect(rectSoldados, rectArma);
@@ -294,6 +463,15 @@ public class App extends Application {
                 if(colisionArma == false) {
                     groupRectArma.setLayoutX(1200);
                     switchRandom();
+                    //Incrementamos la puntuacion
+                    puntuacion++;
+                    textoPuntuacion.setText(String.valueOf(puntuacion));
+                }
+                
+                Shape colisionBomba1Soldado = Shape.intersect(rectSoldados, rectBomba);
+                boolean colisionBomba = colisionBomba1Soldado.getBoundsInLocal().isEmpty();
+                if(colisionBomba == false) {
+                    reinicioPartida();
                 }
         
             })
@@ -303,9 +481,47 @@ public class App extends Application {
         
         Timeline movimiento_Bomba = new Timeline(
             new KeyFrame(Duration.seconds(0.017), (ActionEvent ae) -> {
+        
+        // --------------------- VELOCIDADES BOMBAS -------------------------//
+        
+                groupRectBomba.setLayoutY(posicionBombaY);
+                groupRectBomba.setLayoutX(posicionBombaX);
+                posicionBombaY += velocidadConstBomba;
                 
-                groupRectBomba.setLayoutY(velocidadBombaY);
-                velocidadBombaY += velocidadConstBomba;
+//                groupRectBomba2.setLayoutY(posicionBomba2Y);
+//                groupRectBomba2.setLayoutX(posicionBomba2X);
+//                posicionBomba2Y += velocidadConstBomba2;
+//                
+//                groupRectBomba3.setLayoutY(posicionBomba3Y);
+//                groupRectBomba3.setLayoutX(posicionBomba3X);
+//                posicionBomba3Y += velocidadConstBomba3;
+//                
+//                groupRectBomba4.setLayoutY(posicionBomba4Y);
+//                groupRectBomba4.setLayoutX(posicionBomba4X);
+//                posicionBomba4Y += velocidadConstBomba4;
+
+        //----------------------- ALEATORIEDAD BOMBAS -------------------------//
+        
+                if(posicionBombaY >= 250) {
+                    posicionBombaY = -20;
+                    switchRandomBomba();
+                    posicionBombaX = randomBombaX;
+                }
+                if(posicionBomba2Y >= 250) {
+                    posicionBomba2Y = -20;
+                    switchRandomBomba2();
+                    posicionBomba2X = randomBombaX;
+                }
+                if(posicionBomba3Y >= 250) {
+                    posicionBomba3Y = -20;
+                    switchRandomBomba3();
+                    posicionBomba3X = randomBombaX;
+                }
+                if(posicionBomba4Y >= 250) {
+                    posicionBomba4Y = -20;
+                    switchRandomBomba4();
+                    posicionBomba4X = randomBombaX;
+                }
                            
             })
          );
