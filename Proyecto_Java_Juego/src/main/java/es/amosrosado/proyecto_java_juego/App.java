@@ -27,7 +27,7 @@ public class App extends Application {
     // Variables finales
     final int ANCHO_ESCENA = 300;
     final int LARGO_ESCENA = 1000;
-    final int TEXT_SIZE = 20;
+    final int TEXT_SIZE = 25;
     //Variables
     int soldadoPosY = 195;
     int soldadoPosX = 195;
@@ -42,7 +42,7 @@ public class App extends Application {
     int armaPosX = 900;
     int armaPosY = 230;
     
-    int posicionBombaX = 200;
+    int posicionBombaX = 100;
     int posicionBomba2X = 300;
     int posicionBomba3X = 500;
     int posicionBomba4X = 700;
@@ -66,6 +66,9 @@ public class App extends Application {
     
     int puntuacion;
     
+    Timeline movimiento_Soldado;
+    Timeline movimiento_Bomba;
+    
     ImageView imgViewSoldadoDerecha;
     ImageView imgViewSoldadoIzquierda;
     ImageView imgViewMapa;
@@ -87,27 +90,54 @@ public class App extends Application {
     Group groupRectBomba4;
     
     Text textoPuntuacion;
+    Text textoDificultad;
+    Text textoFinPartida;
+    
+    Scene scene;
     
     private void switchRandomBomba() {
         
         Random random = new Random();
         randomBombaX = random.nextInt(950);
         randomBombaY = random.nextInt(395); 
-        randomVelocidadBomba = random.nextInt(4);
+        randomVelocidadBomba = random.nextInt(1);
  
         switch(randomVelocidadBomba) {
             case 0:
-                velocidadConstBomba = 1;
-                break;
-            case 1:
                 velocidadConstBomba = 2;
                 break;
-            case 2:
+            case 1:
                 velocidadConstBomba = 3;
-                break;
-            case 3:
-                velocidadConstBomba = 4;
-                break;
+        }
+                if(puntuacion >= 10) {
+            switch(randomVelocidadBomba) {
+                case 0:
+                    velocidadConstBomba = 3;
+                    break;
+                case 1:
+                    velocidadConstBomba = 4;
+                    break;
+            } 
+        }
+        if(puntuacion >= 20) {
+            switch(randomVelocidadBomba) {
+                case 0:
+                    velocidadConstBomba = 4;
+                    break;
+                case 1:
+                    velocidadConstBomba = 5;
+                    break;
+            } 
+        }
+                if(puntuacion >= 30) {
+            switch(randomVelocidadBomba) {
+                case 0:
+                    velocidadConstBomba = 6;
+                    break;
+                case 1:
+                    velocidadConstBomba = 7;
+                    break;
+            } 
         }
     }
     
@@ -116,21 +146,45 @@ public class App extends Application {
         Random random = new Random();
         randomBombaX = random.nextInt(950);
         randomBombaY = random.nextInt(395); 
-        randomVelocidadBomba = random.nextInt(4);
+        randomVelocidadBomba = random.nextInt(2);
  
         switch(randomVelocidadBomba) {
             case 0:
-                velocidadConstBomba2 = 1;
-                break;
-            case 1:
                 velocidadConstBomba2 = 2;
                 break;
-            case 2:
+            case 1:
                 velocidadConstBomba2 = 3;
                 break;
-            case 3:
-                velocidadConstBomba2 = 4;
-                break;
+        }
+        if(puntuacion >= 10) {
+            switch(randomVelocidadBomba) {
+                case 0:
+                    velocidadConstBomba2 = 3;
+                    break;
+                case 1:
+                    velocidadConstBomba2 = 4;
+                    break;
+            } 
+        }
+        if(puntuacion >= 20) {
+            switch(randomVelocidadBomba) {
+                case 0:
+                    velocidadConstBomba2 = 4;
+                    break;
+                case 1:
+                    velocidadConstBomba2 = 5;
+                    break;
+            } 
+        }
+        if(puntuacion >= 30) {
+            switch(randomVelocidadBomba) {
+                case 0:
+                    velocidadConstBomba2 = 6;
+                    break;
+                case 1:
+                    velocidadConstBomba2 = 7;
+                    break;
+            } 
         }
     }
     
@@ -139,21 +193,45 @@ public class App extends Application {
         Random random = new Random();
         randomBombaX = random.nextInt(950);
         randomBombaY = random.nextInt(395); 
-        randomVelocidadBomba = random.nextInt(4);
+        randomVelocidadBomba = random.nextInt(1);
  
         switch(randomVelocidadBomba) {
             case 0:
-                velocidadConstBomba3 = 1;
-                break;
-            case 1:
                 velocidadConstBomba3 = 2;
                 break;
-            case 2:
+            case 1:
                 velocidadConstBomba3 = 3;
                 break;
-            case 3:
-                velocidadConstBomba3 = 4;
-                break;
+        }
+                if(puntuacion >= 10) {
+            switch(randomVelocidadBomba) {
+                case 0:
+                    velocidadConstBomba3 = 3;
+                    break;
+                case 1:
+                    velocidadConstBomba3 = 4;
+                    break;
+            } 
+        }
+        if(puntuacion >= 20) {
+            switch(randomVelocidadBomba) {
+                case 0:
+                    velocidadConstBomba3 = 4;
+                    break;
+                case 1:
+                    velocidadConstBomba3 = 5;
+                    break;
+            } 
+        }
+        if(puntuacion >= 30) {
+            switch(randomVelocidadBomba) {
+                case 0:
+                    velocidadConstBomba3 = 6;
+                    break;
+                case 1:
+                    velocidadConstBomba3 = 7;
+                    break;
+            } 
         }
     }
     
@@ -166,17 +244,41 @@ public class App extends Application {
  
         switch(randomVelocidadBomba) {
             case 0:
-                velocidadConstBomba4 = 1;
-                break;
-            case 1:
                 velocidadConstBomba4 = 2;
                 break;
-            case 2:
+            case 1:
                 velocidadConstBomba4 = 3;
                 break;
-            case 3:
-                velocidadConstBomba4 = 4;
-                break;
+        }
+                if(puntuacion >= 10) {
+            switch(randomVelocidadBomba) {
+                case 0:
+                    velocidadConstBomba4 = 3;
+                    break;
+                case 1:
+                    velocidadConstBomba4 = 4;
+                    break;
+            } 
+        }
+        if(puntuacion >= 20) {
+            switch(randomVelocidadBomba) {
+                case 0:
+                    velocidadConstBomba4 = 4;
+                    break;
+                case 1:
+                    velocidadConstBomba4 = 5;
+                    break;
+            } 
+        }
+        if(puntuacion >= 30) {
+            switch(randomVelocidadBomba) {
+                case 0:
+                    velocidadConstBomba4 = 6;
+                    break;
+                case 1:
+                    velocidadConstBomba4 = 7;
+                    break;
+            } 
         }
     }
     
@@ -207,21 +309,23 @@ public class App extends Application {
     
     private void reinicioPartida() {
         puntuacion = 0;
+        textoFinPartida.setVisible(true);
         textoPuntuacion.setText(String.valueOf(puntuacion));
-        posicionBombaX = -50;
+        textoDificultad.setText("Facil");
+        movimiento_Soldado.stop();
+        movimiento_Bomba.stop();
+        
     }
     
     @Override
     public void start(Stage stage) {
         //-------------------------- CREACION ESCENA -------------------------------//
         Pane paneRoot = new Pane();
-        Scene scene = new Scene(paneRoot, LARGO_ESCENA, ANCHO_ESCENA);
+        scene = new Scene(paneRoot, LARGO_ESCENA, ANCHO_ESCENA);
         scene.setFill(Color.BLACK);
         stage.setTitle("Proyecto");
         stage.setScene(scene);
         stage.show();
-        
-
 
         // ------------------------------- IMAGENES --------------------------------//
         
@@ -266,13 +370,13 @@ public class App extends Application {
         //-------------------------- ENGLOBACIONES ---------------------------//
         
         //Englobacion para colisiones imagenes soldados
-        Rectangle rectSoldados = new Rectangle(70, 70);
+        Rectangle rectSoldados = new Rectangle(50, 50);
         groupRectSoldados = new Group();
         groupRectSoldados.getChildren().addAll(rectSoldados, imgViewSoldadoIzquierda, imgViewSoldadoDerecha);
         rectSoldados.setVisible(true);
         //Posicion inicial Grupo Soldados
         groupRectSoldados.setLayoutX(195);
-        groupRectSoldados.setLayoutY(195);
+        groupRectSoldados.setLayoutY(210);
         paneRoot.getChildren().add(groupRectSoldados);
 
         //Englobacion imagen municion == 0
@@ -306,40 +410,40 @@ public class App extends Application {
         paneRoot.getChildren().add(groupRectArma);
         
         //Englobacion imagen bomba1
-        Rectangle rectBomba = new Rectangle(59, 30);
+        Rectangle rectBomba = new Rectangle(45, 50);
         groupRectBomba = new Group();
         groupRectBomba.getChildren().addAll(rectBomba, imgViewBomba1);
-        rectBomba.setVisible(true);
+        rectBomba.setVisible(false);
         //Posicion inicial Grupo Bomba1
         groupRectBomba.setLayoutX(500);
         groupRectBomba.setLayoutY(-50);
         paneRoot.getChildren().add(groupRectBomba);
         
         //Englobacion imagen bomba2
-        Rectangle rectBomba2 = new Rectangle(59, 30);
+        Rectangle rectBomba2 = new Rectangle(45, 50);
         groupRectBomba2 = new Group();
         groupRectBomba2.getChildren().addAll(rectBomba2, imgViewBomba2);
-        rectBomba2.setVisible(true);
+        rectBomba2.setVisible(false);
         //Posicion inicial Grupo Bomba2
-        groupRectBomba2.setLayoutX(200);
+        groupRectBomba2.setLayoutX(100);
         groupRectBomba2.setLayoutY(-50);
         paneRoot.getChildren().add(groupRectBomba2);
         
         //Englobacion imagen bomba3
-        Rectangle rectBomba3 = new Rectangle(59, 30);
+        Rectangle rectBomba3 = new Rectangle(45, 50);
         groupRectBomba3 = new Group();
         groupRectBomba3.getChildren().addAll(rectBomba3, imgViewBomba3);
-        rectBomba3.setVisible(true);
+        rectBomba3.setVisible(false);
         //Posicion inicial Grupo Bomba3
         groupRectBomba3.setLayoutX(700);
         groupRectBomba3.setLayoutY(-50);
         paneRoot.getChildren().add(groupRectBomba3);
         
         //Englobacion imagen bomba4
-        Rectangle rectBomba4 = new Rectangle(59, 30);
+        Rectangle rectBomba4 = new Rectangle(45, 50);
         groupRectBomba4 = new Group();
         groupRectBomba4.getChildren().addAll(rectBomba4, imgViewBomba4);
-        rectBomba4.setVisible(true);
+        rectBomba4.setVisible(false);
         //Posicion inicial Grupo Bomba4
         groupRectBomba4.setLayoutX(300);
         groupRectBomba4.setLayoutY(-50);
@@ -360,9 +464,18 @@ public class App extends Application {
         paneCurrentScore.setSpacing(10);
         paneScores.getChildren().add(paneCurrentScore);
         
+        HBox finPartida = new HBox();
+        finPartida.setSpacing(10);
+        paneScores.getChildren().add(finPartida);
+        
         HBox paneHighScore = new HBox();
         paneHighScore.setSpacing(10);
         paneScores.getChildren().add(paneHighScore);
+        
+        textoFinPartida = new Text("Has Muerto");
+        textoFinPartida.setFont(Font.font(70));
+        textoFinPartida.setFill(Color.WHITE);
+        textoFinPartida.setVisible(false);
         
         Text textoTituloPuntuacion = new Text("Puntuacion:");
         textoTituloPuntuacion.setFont(Font.font(TEXT_SIZE));
@@ -374,20 +487,18 @@ public class App extends Application {
         
         Text textoTituloDificultad = new Text("Dificultad:");
         textoTituloDificultad.setFont(Font.font(TEXT_SIZE));
-        textoTituloDificultad.setFill(Color.WHITE);
+        textoTituloDificultad.setFill(Color.BLACK);
         
-        Text textoDificultad = new Text("Facil");
+        textoDificultad = new Text("Facil");
         textoDificultad.setFont(Font.font(TEXT_SIZE));
-        textoDificultad.setFill(Color.WHITE);
+        textoDificultad.setFill(Color.BLACK);
         
         paneCurrentScore.getChildren().add(textoTituloPuntuacion);
         paneCurrentScore.getChildren().add(textoPuntuacion);
         paneHighScore.getChildren().add(textoTituloDificultad);
         paneHighScore.getChildren().add(textoDificultad);
+        finPartida.getChildren().add(textoFinPartida);
         
-//        if(textoPuntuacion == puntuacionMaxima) {
-//            
-//        }
         //------------------- PULSACION DE TECLAS --------------------------//
         
         //Pulsacion de las teclas
@@ -408,6 +519,24 @@ public class App extends Application {
                     imgViewSoldadoIzquierda.setVisible(false);
                     imgViewSoldadoDerecha.setVisible(true);
                     break;
+                case SPACE:
+                    //Pulsar el espacio
+                    movimiento_Soldado.play();
+                    movimiento_Bomba.play();
+                    //Actualizar posicion del Soldado
+                    soldadoPosX = 195;
+                    //Quitar el texto "has muerto"
+                    textoFinPartida.setVisible(false);
+                    //Actualizar posiciones bombas en X
+                    posicionBombaX = 100;;
+                    posicionBomba2X = 300;
+                    posicionBomba3X = 500;
+                    posicionBomba4X = 700;
+                    //Actualizar posiciones bombas en Y
+                    posicionBombaY = -50;
+                    posicionBomba2Y = -50;
+                    posicionBomba3Y = -50;
+                    posicionBomba4Y = -50;
             }
         });
         
@@ -416,9 +545,9 @@ public class App extends Application {
             velocidadSoldado = 0;
         });
 
-    //-------------------------- TIMELINE--------------------------------------//
+    //-------------------------- TIMELINE SOLDADO --------------------------------------//
     
-        Timeline movimiento_Soldado = new Timeline(
+            movimiento_Soldado = new Timeline(
             new KeyFrame(Duration.seconds(0.017), (ActionEvent ae) -> {
                 //Actualizar Posicion del Soldado Izquierda
                 soldadoPosX += velocidadSoldado;
@@ -436,6 +565,21 @@ public class App extends Application {
                         soldadoPosX = LARGO_ESCENA - 55;
                     }
                 }
+                
+                //Actualiza el texto de la dificultad al llegar a los objetivos
+                if(puntuacion == 10) {
+                    textoDificultad.setText("Intermedio");
+                }
+                if(puntuacion == 20) {
+                    textoDificultad.setText("Dificil");
+                }
+                if(puntuacion == 30) {
+                    textoDificultad.setText("INSANO");
+                }
+//                if(puntuacion >= 35) {
+//                    textoFinPartida.setVisible(true);
+//                    textoPuntuacion.setText("0");
+//                }
                 
         //---------------------------------- COLISIONES ---------------------------------------------//
         
@@ -473,13 +617,31 @@ public class App extends Application {
                 if(colisionBomba == false) {
                     reinicioPartida();
                 }
-        
+                
+                Shape colisionBomba2Soldado = Shape.intersect(rectSoldados, rectBomba2);
+                boolean colisionBomba2 = colisionBomba2Soldado.getBoundsInLocal().isEmpty();
+                if(colisionBomba2 == false) {
+                    reinicioPartida();
+                }
+                
+                Shape colisionBomba3Soldado = Shape.intersect(rectSoldados, rectBomba3);
+                boolean colisionBomba3 = colisionBomba3Soldado.getBoundsInLocal().isEmpty();
+                if(colisionBomba3 == false) {
+                    reinicioPartida();
+                }
+                
+                Shape colisionBomba4Soldado = Shape.intersect(rectSoldados, rectBomba4);
+                boolean colisionBomba4 = colisionBomba4Soldado.getBoundsInLocal().isEmpty();
+                if(colisionBomba4 == false) {
+                    reinicioPartida();
+                }
             })
         );
+            
         movimiento_Soldado.setCycleCount(Timeline.INDEFINITE);
         movimiento_Soldado.play();
         
-        Timeline movimiento_Bomba = new Timeline(
+            movimiento_Bomba = new Timeline(
             new KeyFrame(Duration.seconds(0.017), (ActionEvent ae) -> {
         
         // --------------------- VELOCIDADES BOMBAS -------------------------//
@@ -488,17 +650,17 @@ public class App extends Application {
                 groupRectBomba.setLayoutX(posicionBombaX);
                 posicionBombaY += velocidadConstBomba;
                 
-//                groupRectBomba2.setLayoutY(posicionBomba2Y);
-//                groupRectBomba2.setLayoutX(posicionBomba2X);
-//                posicionBomba2Y += velocidadConstBomba2;
-//                
-//                groupRectBomba3.setLayoutY(posicionBomba3Y);
-//                groupRectBomba3.setLayoutX(posicionBomba3X);
-//                posicionBomba3Y += velocidadConstBomba3;
-//                
-//                groupRectBomba4.setLayoutY(posicionBomba4Y);
-//                groupRectBomba4.setLayoutX(posicionBomba4X);
-//                posicionBomba4Y += velocidadConstBomba4;
+                groupRectBomba2.setLayoutY(posicionBomba2Y);
+                groupRectBomba2.setLayoutX(posicionBomba2X);
+                posicionBomba2Y += velocidadConstBomba2;
+                
+                groupRectBomba3.setLayoutY(posicionBomba3Y);
+                groupRectBomba3.setLayoutX(posicionBomba3X);
+                posicionBomba3Y += velocidadConstBomba3;
+                
+                groupRectBomba4.setLayoutY(posicionBomba4Y);
+                groupRectBomba4.setLayoutX(posicionBomba4X);
+                posicionBomba4Y += velocidadConstBomba4;
 
         //----------------------- ALEATORIEDAD BOMBAS -------------------------//
         
