@@ -5,12 +5,17 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -28,20 +33,20 @@ public class App extends Application {
     final int ANCHO_ESCENA = 300;
     final int LARGO_ESCENA = 1000;
     final int TEXT_SIZE = 25;
-    //Variables
+    //Variables Soldadp
     int soldadoPosY = 195;
     int soldadoPosX = 195;
     int velocidadSoldado = 0;
-    
+    //Variable posicion municion
     int municionPosX = 500;
     int municionPosY = 210;
-    
+    //Variables posicion Botiquin
     int botiquinPosX = 700;
     int botiquinPosY = 220;
-    
+    //Variables Posicion Arma
     int armaPosX = 900;
     int armaPosY = 230;
-    
+    //Variables posicion bombas
     int posicionBombaX = 100;
     int posicionBomba2X = 300;
     int posicionBomba3X = 500;
@@ -91,10 +96,11 @@ public class App extends Application {
     
     Text textoPuntuacion;
     Text textoDificultad;
-    Text textoFinPartida;
-    
+//    Text textoFinPartida;
+    Label textoFinPartida;
     Scene scene;
     
+    //Metodo para el incremento de velocidad de la Bomba 1
     private void switchRandomBomba() {
         
         Random random = new Random();
@@ -141,6 +147,7 @@ public class App extends Application {
         }
     }
     
+    //Metodo para el incremento de la velocidad de la Bomba 2
     private void switchRandomBomba2() {
         
         Random random = new Random();
@@ -188,6 +195,7 @@ public class App extends Application {
         }
     }
     
+    //Metodo para el incremento de la velocidad de la Bomba 3
     private void switchRandomBomba3() {
         
         Random random = new Random();
@@ -235,6 +243,7 @@ public class App extends Application {
         }
     }
     
+    //Metodo para el incremento de la velocidad de la Bomba 4
     private void switchRandomBomba4() {
         
         Random random = new Random();
@@ -282,6 +291,7 @@ public class App extends Application {
         }
     }
     
+    //Metodo para las posiciones aleatorias de los objetivos
     private void switchRandom() {
         
         //Eleccion aleatoria de objetivos
@@ -307,6 +317,7 @@ public class App extends Application {
         }
     }
     
+    //Metodo para el reinicio de partida
     private void reinicioPartida() {
         puntuacion = 0;
         textoFinPartida.setVisible(true);
@@ -319,7 +330,9 @@ public class App extends Application {
     
     @Override
     public void start(Stage stage) {
+        
         //-------------------------- CREACION ESCENA -------------------------------//
+        
         Pane paneRoot = new Pane();
         scene = new Scene(paneRoot, LARGO_ESCENA, ANCHO_ESCENA);
         scene.setFill(Color.BLACK);
@@ -369,17 +382,17 @@ public class App extends Application {
         
         //-------------------------- ENGLOBACIONES ---------------------------//
         
-        //Englobacion para colisiones imagenes soldados
+        //Englobacion de grupo imagenes soldados
         Rectangle rectSoldados = new Rectangle(50, 50);
         groupRectSoldados = new Group();
         groupRectSoldados.getChildren().addAll(rectSoldados, imgViewSoldadoIzquierda, imgViewSoldadoDerecha);
-        rectSoldados.setVisible(true);
+        rectSoldados.setVisible(false);
         //Posicion inicial Grupo Soldados
         groupRectSoldados.setLayoutX(195);
         groupRectSoldados.setLayoutY(210);
         paneRoot.getChildren().add(groupRectSoldados);
 
-        //Englobacion imagen municion == 0
+        //Englobacion grupo municion == 0
         Rectangle rectMunicion = new Rectangle(57,53);
         groupRectMunicion = new Group();
         groupRectMunicion.getChildren().addAll(rectMunicion, imgViewMunicion);
@@ -389,7 +402,7 @@ public class App extends Application {
         groupRectMunicion.setLayoutY(230);
         paneRoot.getChildren().add(groupRectMunicion);
         
-        //Englobacion imagen botiquin == 1
+        //Englobacion grupo botiquin == 1
         Rectangle rectBotiquin = new Rectangle(59, 38);
         groupRectBotiquin = new Group();
         groupRectBotiquin.getChildren().addAll(rectBotiquin, imgViewBotiquin);
@@ -399,7 +412,7 @@ public class App extends Application {
         groupRectBotiquin.setLayoutY(230);
         paneRoot.getChildren().add(groupRectBotiquin);
         
-        //Englobacion imagen arma == 2
+        //Englobacion grupo arma == 2
         Rectangle rectArma = new Rectangle(100, 32);
         groupRectArma = new Group();
         groupRectArma.getChildren().addAll(rectArma, imgViewArma);
@@ -409,7 +422,7 @@ public class App extends Application {
         groupRectArma.setLayoutY(240);
         paneRoot.getChildren().add(groupRectArma);
         
-        //Englobacion imagen bomba1
+        //Englobacion grupo bomba1
         Rectangle rectBomba = new Rectangle(45, 50);
         groupRectBomba = new Group();
         groupRectBomba.getChildren().addAll(rectBomba, imgViewBomba1);
@@ -419,7 +432,7 @@ public class App extends Application {
         groupRectBomba.setLayoutY(-50);
         paneRoot.getChildren().add(groupRectBomba);
         
-        //Englobacion imagen bomba2
+        //Englobacion grupo bomba2
         Rectangle rectBomba2 = new Rectangle(45, 50);
         groupRectBomba2 = new Group();
         groupRectBomba2.getChildren().addAll(rectBomba2, imgViewBomba2);
@@ -429,7 +442,7 @@ public class App extends Application {
         groupRectBomba2.setLayoutY(-50);
         paneRoot.getChildren().add(groupRectBomba2);
         
-        //Englobacion imagen bomba3
+        //Englobacion grupo bomba3
         Rectangle rectBomba3 = new Rectangle(45, 50);
         groupRectBomba3 = new Group();
         groupRectBomba3.getChildren().addAll(rectBomba3, imgViewBomba3);
@@ -439,7 +452,7 @@ public class App extends Application {
         groupRectBomba3.setLayoutY(-50);
         paneRoot.getChildren().add(groupRectBomba3);
         
-        //Englobacion imagen bomba4
+        //Englobacion grupo bomba4
         Rectangle rectBomba4 = new Rectangle(45, 50);
         groupRectBomba4 = new Group();
         groupRectBomba4.getChildren().addAll(rectBomba4, imgViewBomba4);
@@ -449,15 +462,16 @@ public class App extends Application {
         groupRectBomba4.setLayoutY(-50);
         paneRoot.getChildren().add(groupRectBomba4);
         
+        //Metodo para quelos objetivos aparezcan aleatoriamente
         switchRandom();
         
-        // ------------------------------- PUNTUACIONES ------------------------------//
+        //------------------------------- PUNTUACIONES ------------------------------//
         
         HBox paneScores = new HBox();
         paneScores.setTranslateY(20);
         paneScores.setMinWidth(LARGO_ESCENA);
         paneScores.setAlignment(Pos.CENTER);
-        paneScores.setSpacing(100);
+        paneScores.setSpacing(300);
         paneRoot.getChildren().add(paneScores);
         
         HBox paneCurrentScore = new HBox();
@@ -472,23 +486,32 @@ public class App extends Application {
         paneHighScore.setSpacing(10);
         paneScores.getChildren().add(paneHighScore);
         
-        textoFinPartida = new Text("Has Muerto");
+        //Texto fin partida
+        textoFinPartida = new Label("HAS MUERTO");
+        textoFinPartida.setTextFill(Color.WHITE);
+        textoFinPartida.setMinWidth(LARGO_ESCENA);
+        textoFinPartida.setAlignment(Pos.CENTER);
+        textoFinPartida.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0.7), new CornerRadii(5.0), new Insets(-5.0))));
+        paneRoot.getChildren().add(textoFinPartida);
         textoFinPartida.setFont(Font.font(70));
-        textoFinPartida.setFill(Color.WHITE);
         textoFinPartida.setVisible(false);
         
+        //Texto del titulo de la puntuacion
         Text textoTituloPuntuacion = new Text("Puntuacion:");
         textoTituloPuntuacion.setFont(Font.font(TEXT_SIZE));
         textoTituloPuntuacion.setFill(Color.WHITE);
         
+        //Texto de la puntuacion
         textoPuntuacion = new Text("0");
         textoPuntuacion.setFont(Font.font(TEXT_SIZE));
         textoPuntuacion.setFill(Color.WHITE);
         
+        //Texto del titulo de la dificultad
         Text textoTituloDificultad = new Text("Dificultad:");
         textoTituloDificultad.setFont(Font.font(TEXT_SIZE));
         textoTituloDificultad.setFill(Color.BLACK);
         
+        //Texto de la dificultad
         textoDificultad = new Text("Facil");
         textoDificultad.setFont(Font.font(TEXT_SIZE));
         textoDificultad.setFill(Color.BLACK);
@@ -497,7 +520,7 @@ public class App extends Application {
         paneCurrentScore.getChildren().add(textoPuntuacion);
         paneHighScore.getChildren().add(textoTituloDificultad);
         paneHighScore.getChildren().add(textoDificultad);
-        finPartida.getChildren().add(textoFinPartida);
+//        finPartida.getChildren().add(textoFinPartida);
         
         //------------------- PULSACION DE TECLAS --------------------------//
         
@@ -513,6 +536,7 @@ public class App extends Application {
                     imgViewSoldadoIzquierda.setVisible(true);
                     break;
                 case RIGHT:
+                    //Pulsar tecla derecha
                     imgViewSoldadoDerecha.setImage(imagenSoldadoDerecha);
                     velocidadSoldado = 3;
                     //Hacer invisible imagen derecha y visible la izquierda
@@ -521,12 +545,19 @@ public class App extends Application {
                     break;
                 case SPACE:
                     //Pulsar el espacio
+                    //Timeline se cambia a play
                     movimiento_Soldado.play();
                     movimiento_Bomba.play();
+                    //Poner los objetivos a 0
+                    puntuacion = 0;
+                    textoPuntuacion.setText("0");
                     //Actualizar posicion del Soldado
                     soldadoPosX = 195;
                     //Quitar el texto "has muerto"
                     textoFinPartida.setVisible(false);
+                    textoFinPartida.setText("HAS MUERTO");
+                    //Actualizar texto de la dificultad
+                    textoDificultad.setText("Facil");
                     //Actualizar posiciones bombas en X
                     posicionBombaX = 100;;
                     posicionBomba2X = 300;
@@ -539,7 +570,6 @@ public class App extends Application {
                     posicionBomba4Y = -50;
             }
         });
-        
         
         scene.setOnKeyReleased((KeyEvent event) -> {
             velocidadSoldado = 0;
@@ -557,7 +587,7 @@ public class App extends Application {
                 soldadoPosX += velocidadSoldado;
                 groupRectSoldados.setLayoutX(soldadoPosX);
                                 
-                // Limites de imagenes del soldado
+                // Limites del soldado
                 if(soldadoPosX < 0){
                     soldadoPosX = 0;
                 } else {
@@ -568,7 +598,7 @@ public class App extends Application {
                 
                 //Actualiza el texto de la dificultad al llegar a los objetivos
                 if(puntuacion == 10) {
-                    textoDificultad.setText("Intermedio");
+                    textoDificultad.setText("Media");
                 }
                 if(puntuacion == 20) {
                     textoDificultad.setText("Dificil");
@@ -576,10 +606,13 @@ public class App extends Application {
                 if(puntuacion == 30) {
                     textoDificultad.setText("INSANO");
                 }
-//                if(puntuacion >= 35) {
-//                    textoFinPartida.setVisible(true);
-//                    textoPuntuacion.setText("0");
-//                }
+                if(puntuacion >= 35) {
+                    textoFinPartida.setVisible(true);
+                    puntuacion = 0;
+                    textoFinPartida.setText("YOU WIN!");
+                    movimiento_Soldado.stop();
+                    movimiento_Bomba.stop();
+                }
                 
         //---------------------------------- COLISIONES ---------------------------------------------//
         
@@ -641,6 +674,8 @@ public class App extends Application {
         movimiento_Soldado.setCycleCount(Timeline.INDEFINITE);
         movimiento_Soldado.play();
         
+        //---------------------- TIMELINE BOMBAS-------------------------------//
+        
             movimiento_Bomba = new Timeline(
             new KeyFrame(Duration.seconds(0.017), (ActionEvent ae) -> {
         
@@ -650,17 +685,17 @@ public class App extends Application {
                 groupRectBomba.setLayoutX(posicionBombaX);
                 posicionBombaY += velocidadConstBomba;
                 
-                groupRectBomba2.setLayoutY(posicionBomba2Y);
-                groupRectBomba2.setLayoutX(posicionBomba2X);
-                posicionBomba2Y += velocidadConstBomba2;
-                
-                groupRectBomba3.setLayoutY(posicionBomba3Y);
-                groupRectBomba3.setLayoutX(posicionBomba3X);
-                posicionBomba3Y += velocidadConstBomba3;
-                
-                groupRectBomba4.setLayoutY(posicionBomba4Y);
-                groupRectBomba4.setLayoutX(posicionBomba4X);
-                posicionBomba4Y += velocidadConstBomba4;
+//                groupRectBomba2.setLayoutY(posicionBomba2Y);
+//                groupRectBomba2.setLayoutX(posicionBomba2X);
+//                posicionBomba2Y += velocidadConstBomba2;
+//                
+//                groupRectBomba3.setLayoutY(posicionBomba3Y);
+//                groupRectBomba3.setLayoutX(posicionBomba3X);
+//                posicionBomba3Y += velocidadConstBomba3;
+//                
+//                groupRectBomba4.setLayoutY(posicionBomba4Y);
+//                groupRectBomba4.setLayoutX(posicionBomba4X);
+//                posicionBomba4Y += velocidadConstBomba4;
 
         //----------------------- ALEATORIEDAD BOMBAS -------------------------//
         
