@@ -685,17 +685,17 @@ public class App extends Application {
                 groupRectBomba.setLayoutX(posicionBombaX);
                 posicionBombaY += velocidadConstBomba;
                 
-//                groupRectBomba2.setLayoutY(posicionBomba2Y);
-//                groupRectBomba2.setLayoutX(posicionBomba2X);
-//                posicionBomba2Y += velocidadConstBomba2;
-//                
-//                groupRectBomba3.setLayoutY(posicionBomba3Y);
-//                groupRectBomba3.setLayoutX(posicionBomba3X);
-//                posicionBomba3Y += velocidadConstBomba3;
-//                
-//                groupRectBomba4.setLayoutY(posicionBomba4Y);
-//                groupRectBomba4.setLayoutX(posicionBomba4X);
-//                posicionBomba4Y += velocidadConstBomba4;
+                groupRectBomba2.setLayoutY(posicionBomba2Y);
+                groupRectBomba2.setLayoutX(posicionBomba2X);
+                posicionBomba2Y += velocidadConstBomba2;
+                
+                groupRectBomba3.setLayoutY(posicionBomba3Y);
+                groupRectBomba3.setLayoutX(posicionBomba3X);
+                posicionBomba3Y += velocidadConstBomba3;
+                
+                groupRectBomba4.setLayoutY(posicionBomba4Y);
+                groupRectBomba4.setLayoutX(posicionBomba4X);
+                posicionBomba4Y += velocidadConstBomba4;
 
         //----------------------- ALEATORIEDAD BOMBAS -------------------------//
         
